@@ -1,0 +1,48 @@
+{
+  "allow_default_vpcs": false,
+  "approved_vpc_states": [
+    "available"
+  ],
+  "approved_vpc_cidr_blocks": [
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+    "192.168.0.0/16"
+  ],
+  "required_vpc_tags": [
+    "Environment",
+    "Owner",
+    "compliance",
+    "confidentiality"
+  ],
+  "require_dns_support": true,
+  "require_dns_hostnames": true,
+  "approved_vpc_dhcp_options_ids": [],
+  "require_vpc_flow_logs": true,
+  "approved_flow_log_statuses": [
+    "ACTIVE"
+  ],
+  "required_flow_log_traffic_types": [
+    "ALL"
+  ],
+  "required_vpc_endpoint_services": [],
+  "approved_vpc_endpoint_states": [
+    "available"
+  ],
+  "require_vpc_encryption_control": true,
+  "approved_vpc_encryption_control_modes": [
+    "enforce"
+  ],
+  "approved_vpc_encryption_control_states": [
+    "available"
+  ],
+  "allowed_vpc_encryption_control_exclusions": [],
+  "require_vpc_block_public_access": true,
+  "approved_vpc_block_public_access_modes": [
+    "block-ingress",
+    "block-bidirectional"
+  ],
+  "require_vpc_network_address_usage_metrics": true,
+  "required_encrypted_vpc_flow_log_fields": [
+    "encryption-status"
+  ]
+}
