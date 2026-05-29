@@ -1,5 +1,9 @@
 package compliance_framework.require_flow_logs
 
+test_risk_template_violation_id if {
+  risk_templates[0].violation_ids == ["vpc_flow_logs_not_compliant"]
+}
+
 test_no_violation_active_all_flow_log if {
   count(violation) == 0 with input as {
     "vpc_context": {

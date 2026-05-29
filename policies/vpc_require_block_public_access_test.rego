@@ -1,5 +1,9 @@
 package compliance_framework.require_block_public_access
 
+test_risk_template_violation_id if {
+	risk_templates[0].violation_ids == ["vpc_block_public_access_not_enforced"]
+}
+
 test_no_violation_block_ingress if {
 	count(violation) == 0 with input as {
 		"vpc": {"BlockPublicAccessStates": {"InternetGatewayBlockMode": "block-ingress"}}

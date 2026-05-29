@@ -12,6 +12,10 @@ encrypted_vpc_input := {
 	}
 }
 
+test_risk_template_violation_id if {
+	risk_templates[0].violation_ids == ["vpc_encrypted_flow_log_format_incomplete"]
+}
+
 test_skip_when_vpc_encryption_control_missing if {
 	skip_reason == "VPC encryption control is not enforced and available" with input as {
 		"vpc": {},

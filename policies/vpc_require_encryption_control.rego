@@ -1,5 +1,32 @@
 package compliance_framework.require_encryption_control
 
+risk_templates := [{
+  "name": "VPC encryption control is not compliant",
+  "title": "VPC traffic encryption enforcement gap",
+  "statement": "VPC encryption control is missing, in an unapproved mode or state, or contains unapproved enabled exclusions, weakening enforcement of expected encryption protections across the VPC boundary.",
+  "likelihood_hint": "medium",
+  "impact_hint": "high",
+  "violation_ids": ["vpc_encryption_control_not_compliant"],
+  "threat_refs": [
+    {
+      "system": "https://cwe.mitre.org",
+      "external_id": "CWE-311",
+      "title": "Missing Encryption of Sensitive Data",
+      "url": "https://cwe.mitre.org/data/definitions/311.html"
+    }
+  ],
+  "remediation": {
+    "title": "Align VPC encryption control with approved policy",
+    "description": "Enable VPC encryption control in an approved mode and state, and remove any enabled exclusions that are not explicitly approved.",
+    "tasks": [
+      {"title": "Enable VPC encryption control if it is missing"},
+      {"title": "Set the encryption control mode and state to approved values"},
+      {"title": "Disable unapproved enabled resource exclusions"},
+      {"title": "Review any remaining exclusions to confirm they are explicitly allowed and justified"}
+    ]
+  }
+}]
+
 vpc_encryption_control := object.get(input.vpc, "EncryptionControl", {})
 
 approved_mode if {
@@ -34,7 +61,7 @@ compliant_encryption_control if {
 	count(unapproved_enabled_exclusion) == 0
 }
 
-violation[{}] if {
+violation[{"id": "vpc_encryption_control_not_compliant"}] if {
 	data.require_vpc_encryption_control
 	not compliant_encryption_control
 }

@@ -1,5 +1,32 @@
 package compliance_framework.require_encrypted_flow_log_format
 
+risk_templates := [{
+  "name": "Encrypted VPC flow logs omit required security fields",
+  "title": "Encrypted VPC flow log visibility gap",
+  "statement": "For encrypted VPCs, the configured flow log format omits required security-relevant fields, reducing visibility into encryption posture and weakening audit and forensic analysis of network activity.",
+  "likelihood_hint": "medium",
+  "impact_hint": "medium",
+  "violation_ids": ["vpc_encrypted_flow_log_format_incomplete"],
+  "threat_refs": [
+    {
+      "system": "https://cwe.mitre.org",
+      "external_id": "CWE-778",
+      "title": "Insufficient Logging",
+      "url": "https://cwe.mitre.org/data/definitions/778.html"
+    }
+  ],
+  "remediation": {
+    "title": "Include required security fields in encrypted VPC flow logs",
+    "description": "Update the VPC flow log format for encrypted VPCs so it contains all required fields needed to validate encryption-related network telemetry.",
+    "tasks": [
+      {"title": "Review the current VPC flow log format"},
+      {"title": "Add all policy-required fields to the flow log format"},
+      {"title": "Confirm the resulting logs expose the required encryption-related telemetry"},
+      {"title": "Re-validate log delivery after the format change"}
+    ]
+  }
+}]
+
 vpc_encryption_control := object.get(input.vpc, "EncryptionControl", {})
 
 encrypted_vpc if {
@@ -23,7 +50,7 @@ compliant_flow_log_format if {
 	flow_log_has_all_required_fields(flow_log)
 }
 
-violation[{}] if {
+violation[{"id": "vpc_encrypted_flow_log_format_incomplete"}] if {
 	encrypted_vpc
 	count(required_flow_log_field) > 0
 	not compliant_flow_log_format

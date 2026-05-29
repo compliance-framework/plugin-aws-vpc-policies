@@ -1,5 +1,9 @@
 package compliance_framework.require_encryption_control
 
+test_risk_template_violation_id if {
+	risk_templates[0].violation_ids == ["vpc_encryption_control_not_compliant"]
+}
+
 test_no_violation_enforce_available_without_exclusions if {
 	count(violation) == 0 with input as {
 		"vpc": {
