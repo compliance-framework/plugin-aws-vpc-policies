@@ -38,6 +38,21 @@ required_flow_log_field[field] if {
 	field := data.required_encrypted_vpc_flow_log_fields[_]
 }
 
+approved_flow_log_status(status) if {
+	approved := data.approved_flow_log_statuses[_]
+	status == approved
+}
+
+required_traffic_type(traffic_type) if {
+	required := data.required_flow_log_traffic_types[_]
+	traffic_type == required
+}
+
+qualifying_flow_log(flow_log) if {
+	approved_flow_log_status(flow_log.FlowLogStatus)
+	required_traffic_type(flow_log.TrafficType)
+}
+
 flow_log_has_all_required_fields(flow_log) if {
 	count({field |
 		required_flow_log_field[field]
@@ -47,6 +62,7 @@ flow_log_has_all_required_fields(flow_log) if {
 
 compliant_flow_log_format if {
 	flow_log := input.vpc_context.flow_logs_for_vpc[_]
+	qualifying_flow_log(flow_log)
 	flow_log_has_all_required_fields(flow_log)
 }
 

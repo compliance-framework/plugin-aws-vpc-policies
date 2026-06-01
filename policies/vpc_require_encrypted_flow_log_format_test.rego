@@ -45,7 +45,7 @@ test_no_violation_encrypted_vpc_flow_log_includes_encryption_status if {
 	count(violation) == 0 with input as {
 		"vpc": {"EncryptionControl": {"Mode": "enforce", "State": "available"}},
 		"vpc_context": {
-			"flow_logs_for_vpc": [{"LogFormat": "${version} ${account-id} ${interface-id} ${encryption-status}"}]
+			"flow_logs_for_vpc": [{"FlowLogStatus": "ACTIVE", "TrafficType": "ALL", "LogFormat": "${version} ${account-id} ${interface-id} ${encryption-status}"}]
 		}
 	}
 }
@@ -54,7 +54,7 @@ test_violation_encrypted_vpc_flow_log_missing_encryption_status if {
 	count(violation) == 1 with input as {
 		"vpc": {"EncryptionControl": {"Mode": "enforce", "State": "available"}},
 		"vpc_context": {
-			"flow_logs_for_vpc": [{"LogFormat": "${version} ${account-id} ${interface-id}"}]
+			"flow_logs_for_vpc": [{"FlowLogStatus": "ACTIVE", "TrafficType": "ALL", "LogFormat": "${version} ${account-id} ${interface-id}"}]
 		}
 	}
 }
@@ -67,7 +67,20 @@ test_no_violation_custom_required_field_present if {
 	count(violation) == 0 with input as {
 		"vpc": {"EncryptionControl": {"Mode": "enforce", "State": "available"}},
 		"vpc_context": {
-			"flow_logs_for_vpc": [{"LogFormat": "${version} ${flow-direction}"}]
+			"flow_logs_for_vpc": [{"FlowLogStatus": "ACTIVE", "TrafficType": "ALL", "LogFormat": "${version} ${flow-direction}"}]
 		}
 	} with data.required_encrypted_vpc_flow_log_fields as ["flow-direction"]
+}
+
+
+test_violation_when_required_field_only_exists_on_non_qualifying_flow_log if {
+	count(violation) == 1 with input as {
+		"vpc": {"EncryptionControl": {"Mode": "enforce", "State": "available"}},
+		"vpc_context": {
+			"flow_logs_for_vpc": [
+				{"FlowLogStatus": "ACTIVE", "TrafficType": "ALL", "LogFormat": "${version} ${account-id} ${interface-id}"},
+				{"FlowLogStatus": "FAILED", "TrafficType": "ALL", "LogFormat": "${version} ${account-id} ${interface-id} ${encryption-status}"}
+			]
+		}
+	}
 }

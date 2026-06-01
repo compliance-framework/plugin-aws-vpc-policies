@@ -5,8 +5,13 @@ vpc_cidr[cidr] if {
   cidr != ""
 }
 
+active_cidr_association(association) if {
+  association.CidrBlockState.State == "associated"
+}
+
 vpc_cidr[cidr] if {
   association := input.vpc.CidrBlockAssociationSet[_]
+  active_cidr_association(association)
   cidr := association.CidrBlock
   cidr != ""
 }
