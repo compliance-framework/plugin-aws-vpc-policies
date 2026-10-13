@@ -1,0 +1,6 @@
+lisa-design:
+- Callers are byte-for-byte the mock-plugin-policies-1 callers with the pin moved to v1.5.2 (6e7fc9c) and push branches set to [master]; the repo keeps master as its default branch (W2 decision).
+- Manifest seeded at 0.1.0: releases/latest is v0.1.0 (final, vX.Y.Z), its commit b670aaf is an ancestor of master, so no bootstrap-sha.
+- No version.txt added by hand; release-please adds it in the first release PR (simple release type).
+- release.yml keeps opa-version "1.14.1" (the agent's OPA) and directory: policies, so the bundle stays built from policies/ only (identical to the old opa build -b policies output, checked locally).
+- README unchanged: it describes local make build only, not releasing.
