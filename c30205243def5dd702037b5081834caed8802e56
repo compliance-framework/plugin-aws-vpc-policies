@@ -1,0 +1,2 @@
+lisa-selfreview:
+Pass 1 (ccf-review packs core, rego-policy): approve, no findings on the diff. The Rego diff is opa fmt 1.14.1 output plus 54 trailing `# regal ignore:unresolved-reference` comments (data.json keys); ci.yml is the mock-plugin-policies-1 caller with push on master, SHA-pinned, top-level permissions {}. Behaviour verified identical (113 inputs x 22 data configs). Pre-existing items (violation[{}] without id in 9 packages, no METADATA, package names without the vpc_ prefix, tag-pinned actions in build-and-upload.yml) are out of scope and listed in the PR body.
