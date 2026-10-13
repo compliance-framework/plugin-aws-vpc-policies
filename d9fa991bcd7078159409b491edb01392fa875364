@@ -4,3 +4,6 @@ lisa-design:
 - No version.txt added by hand; release-please adds it in the first release PR (simple release type).
 - release.yml keeps opa-version "1.14.1" (the agent's OPA) and directory: policies, so the bundle stays built from policies/ only (identical to the old opa build -b policies output, checked locally).
 - README unchanged: it describes local make build only, not releasing.
+
+lisa-selfreview:
+- pass 1 (strict): no findings. Checked pins (all 7 shared uses at v1.5.2), push triggers on master, release-checks job present, config top-level keys == release-please/defaults.json v1.5.2, seed version, actionlint v1.7.12 clean, OPA 1.14.1 check/test (63/63)/build ok, old and new bundle commands produce byte-identical tarballs.
