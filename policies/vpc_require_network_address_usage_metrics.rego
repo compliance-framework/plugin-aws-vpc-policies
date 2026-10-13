@@ -5,7 +5,7 @@ network_address_usage_metrics_enabled if {
 }
 
 violation[{}] if {
-	data.require_vpc_network_address_usage_metrics
+	data.require_vpc_network_address_usage_metrics # regal ignore:unresolved-reference
 	not network_address_usage_metrics_enabled
 }
 
